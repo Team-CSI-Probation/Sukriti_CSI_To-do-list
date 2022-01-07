@@ -5,8 +5,8 @@ const uncheck_icon="fa-circle-thin";
 const strike="strike";
 const clear=document.querySelector(".clear");
 
-let task_list;
-let id;
+let task_list=[];
+let id=0;
 
 let data=localStorage.getItem("key");
 if (data)
@@ -14,9 +14,6 @@ if (data)
     id=task_list.length;
     loadList(task_list);
 }
-else
-{task_list=[];
-id=0;}
 
 function loadList(array)
 {array.forEach(function (element){
@@ -41,7 +38,7 @@ function add(item,id,check,del){if(del){return "";}
     list.insertAdjacentHTML("beforeEnd", entry);
 
 }
-
+//onclick
 document.querySelector(".btn-dark").addEventListener("click", function ()
 {const item= input.value;
     if (item)
@@ -51,13 +48,35 @@ task: item,
 id: 0,
 check:false,
 delete:false});
+localStorage.setItem("key", JSON.stringify(task_list));
+id++;
     }
     else
     {alert("Enter a valid task.");}
+    
     input.value="";
-    localStorage.setItem("key", JSON.stringify(task_list));
-    id++;}
+    }
 
+);
+//on pressing Enter key
+document.addEventListener("keydown", function (event){if(event.key=="Enter")
+{const item= input.value;
+    if (item)
+    {add(item,id,false,false);
+        task_list.push({
+task: item,
+id: 0,
+check:false,
+delete:false});
+localStorage.setItem("key", JSON.stringify(task_list));
+id++;
+    }
+    else
+    {alert("Enter a valid task.");}
+    
+    input.value="";
+    }
+}
 );
 
 //Completing the task
