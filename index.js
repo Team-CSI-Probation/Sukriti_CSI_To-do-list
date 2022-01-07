@@ -3,20 +3,42 @@ const list=document.getElementById("list");
 const check_icon="fa-check-circle";
 const uncheck_icon="fa-circle-thin";
 const strike="strike";
+const clear=document.querySelector(".clear");
+
+let task_list;
+let id;
+
+let data=localStorage.getItem("key");
+if (data)
+{task_list=JSON.parse(data);
+    id=task_list.length;
+    loadList(task_list);
+}
+else
+{task_list=[];
+id=0;}
+
+function loadList(array)
+{array.forEach(function (element){
+    add(element.task, element.id, element.check, element.delete);
+}); }
+
+
+
 //Adding items to the list
 function add(item,id,check,del){if(del){return "";}
     const checked = check ? check_icon : uncheck_icon;
     const striked= check ? strike : "";
     
     const entry= `<li><i class="fa ${checked} " id= "${id}" role="done" ></i>
- <span class=" ${striked} "> ${item} </span>
- <i class="fa fa-trash" id= "${id}" role="trash"></i></li>`;
+ <span class=" ${striked} "> ${item}</span>
+   <i class="fa fa-trash" id= "${id}" role="trash"></i></li>`;
 
     list.insertAdjacentHTML("beforeEnd", entry);
 
 }
 
-document.querySelector("button").addEventListener("click", function ()
+document.querySelector(".btn-dark").addEventListener("click", function ()
 {const item= input.value;
     if (item)
     {add(item,id,false,false);
@@ -28,17 +50,17 @@ delete:false});
     }
     else
     {alert("Enter a valid task.");}
+    input.value="";
+    localStorage.setItem("key", JSON.stringify(task_list));
     id++;}
 
 );
 
-let task_list=[];
-let id=0;
 //Completing the task
 function update(node)
 {node.classList.toggle(check_icon);
     node.classList.toggle(uncheck_icon);
-document.querySelector("span").classList.toggle(strike);
+node.parentNode.querySelector("span").classList.toggle(strike);
 task_list[node.id].check ? false : true;}
 
 
@@ -54,6 +76,12 @@ if(role=="done")
 {update(node);}
 else
 {trash(node);}
+localStorage.setItem("key", JSON.stringify(task_list));
 
+})
 
+clear.addEventListener("click",function (){
+
+    localStorage.clear();
+    location.reload();
 })

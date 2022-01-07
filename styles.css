@@ -26,4 +26,4 @@ padding-bottom: 2rem;
       }
       li{padding-bottom: 2px;}
      li:hover{border: 2px solid;}
-    
+    .strike{text-decoration: line-through;}
