@@ -23,7 +23,11 @@ function loadList(array)
     add(element.task, element.id, element.check, element.delete);
 }); }
 
+clear.addEventListener("click",function (){
 
+    localStorage.clear();
+    location.reload();
+})
 
 //Adding items to the list
 function add(item,id,check,del){if(del){return "";}
@@ -80,8 +84,3 @@ localStorage.setItem("key", JSON.stringify(task_list));
 
 })
 
-clear.addEventListener("click",function (){
-
-    localStorage.clear();
-    location.reload();
-})
