@@ -17,14 +17,16 @@ if (data)
 
 function loadList(array)
 {array.forEach(function (element){
-    add(element.task, element.id, element.check, element.delete);
+    if(element.del== false)
+    add(element.task, element.id, element.check, element.del);
+    
 }); }
 
 clear.addEventListener("click",function (){
 
     localStorage.clear();
     location.reload();
-})
+});
 
 //Adding items to the list
 function add(item,id,check,del){if(del){return "";}
@@ -45,11 +47,11 @@ document.querySelector(".btn-dark").addEventListener("click", function ()
     {add(item,id,false,false);
         task_list.push({
 task: item,
-id: 0,
+id: id++,
 check:false,
-delete:false});
+del:false});
 localStorage.setItem("key", JSON.stringify(task_list));
-id++;
+
     }
     else
     {alert("Enter a valid task.");}
@@ -65,11 +67,11 @@ document.addEventListener("keydown", function (event){if(event.key=="Enter")
     {add(item,id,false,false);
         task_list.push({
 task: item,
-id: 0,
+id: id++,
 check:false,
-delete:false});
+del:false});
 localStorage.setItem("key", JSON.stringify(task_list));
-id++;
+
     }
     else
     {alert("Enter a valid task.");}
@@ -78,28 +80,28 @@ id++;
     }
 }
 );
-
+list.addEventListener("click", function (event){
+    let node=event.target;
+    const role=node.attributes.role.value;
+    if(role=="done")
+    {update(node);}
+    else
+    {trash(node);}
+    localStorage.setItem("key", JSON.stringify(task_list));
+    
+    })
+    
 //Completing the task
 function update(node)
 {node.classList.toggle(check_icon);
     node.classList.toggle(uncheck_icon);
 node.parentNode.querySelector("span").classList.toggle(strike);
-task_list[node.id].check ? false : true;}
+task_list[node.id].check =task_list[node.id].check ? false : true;}
 
 
 //Deleting the task
 function trash(node)
 {node.parentNode.parentNode.removeChild(node.parentNode);
-task_list[node.id].delete= true;}
+task_list[node.id].del= true;}
 
-list.addEventListener("click", function (event){
-let node=event.target;
-const role=node.attributes.role.value;
-if(role=="done")
-{update(node);}
-else
-{trash(node);}
-localStorage.setItem("key", JSON.stringify(task_list));
-
-})
 
